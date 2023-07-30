@@ -187,16 +187,36 @@ void URuntimeMesh::UpdateCollision(bool bForceCookNow)
 	UWorld* World = GetWorld();
 	const bool bShouldCookAsync = !bForceCookNow && World && World->IsGameWorld() && bUseAsyncCooking;
 
-	if (bShouldCookAsync)
+	if (false&&bShouldCookAsync)
 	{
-		UBodySetup* CurrentBodySetup = CreateNewBodySetup();
+
+		
+			UBodySetup* CurrentBodySetup = CreateNewBodySetup();
 		AsyncBodySetupQueue.Add(CurrentBodySetup);
 
 		SetBasicBodySetupParameters(CurrentBodySetup);
 		CopyCollisionElementsToBodySetup(CurrentBodySetup);
+		 
 
-		CurrentBodySetup->CreatePhysicsMeshesAsync(
-			FOnAsyncPhysicsCookFinished::CreateUObject(this, &URuntimeMesh::FinishPhysicsAsyncCook, CurrentBodySetup));
+//		CurrentBodySetup->CreatePhysicsMeshesAsync(
+	//		FOnAsyncPhysicsCookFinished::CreateUObject(this, &URuntimeMesh::FinishPhysicsAsyncCook, CurrentBodySetup,true));
+
+
+		
+		// Abort all previous ones still standing
+		        
+		/*
+		
+		
+			                 UBodySetup * NewBodySetup = CreateNewBodySetup();
+		                 AsyncBodySetupQueue.Add(NewBodySetup);
+		
+			                 SetBasicBodySetupParameters(NewBodySetup);
+		                 CopyCollisionElementsToBodySetup(NewBodySetup);
+		
+			                 NewBodySetup->CreatePhysicsMeshesAsync(
+				                         FOnAsyncPhysicsCookFinished::CreateUObject(this, &URuntimeMesh::FinishPhysicsAsyncCook, NewBodySetup));
+										 */
 	}
 	else
 	{
